@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+
+// Components
 import ListGroup from 'react-bootstrap/ListGroup';
+import Draft from './components/Draft';
 
 // Styles
 import './Main.css';
@@ -116,27 +119,6 @@ function UserEntry(props) {
       <h6>{props.user.name}</h6>
       <Draft draft={props.draft} queens={props.queens} />
     </div>
-  );
-}
-
-function Draft(props) {
-  const sortedPredictionList = props.draft
-    .filter((entry) => entry.placement !== null)
-    .sort((a, b) => b.placement - a.placement)
-    .map((prediction) =>
-      props.queens.find((queen) => queen.id === prediction.queen_id)
-    );
-
-  return (
-    <ListGroup horizontal>
-      {sortedPredictionList.map((queen) => {
-        return (
-          <ListGroup.Item className='prediction-item' key={queen.id}>
-            {queen.name}
-          </ListGroup.Item>
-        );
-      })}
-    </ListGroup>
   );
 }
 
