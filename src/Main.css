@@ -1,0 +1,19 @@
+.draft-display {
+  text-align: left;
+}
+
+.line-ups {
+  margin-right: 10px;
+  width: 70%;
+  float: right;
+}
+
+.line-ups h4 {
+  margin-top: 10px;
+}
+
+.scoreboard {
+  margin: 10px;
+  width: 25%;
+  float: left;
+}
