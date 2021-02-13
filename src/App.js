@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Main from './Main.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 class App extends Component {
@@ -6,7 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user = null
+      user: null
     }
   }
 
@@ -14,20 +16,8 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <img id="logo" src={require('./s13_logo.jpg')} alt='logo'/>
+        <Main user={this.state.user}/>
       </div>
     );
   }
