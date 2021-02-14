@@ -11,6 +11,16 @@ export function getSeasonName(series) {
 }
 
 /**
+ * Filters all predictions for those made by a given user.
+ *
+ * @param user User to get predictions for
+ * @param predictions Array of all predicted results
+ */
+export function getUserPredictions(user, predictions) {
+  return predictions.filter((prediction) => prediction.user_id === user.id);
+}
+
+/**
  * Given actual and predicted results, returns score.
  *
  * Each array element is assumed to have at least the following properties:
