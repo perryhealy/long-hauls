@@ -8,7 +8,7 @@ import Draft from './components/Draft';
 import './Main.css';
 
 // Utilities
-import { getSeasonName, getScore } from './utils';
+import { getSeasonName, getUserPredictions, getScore } from './utils';
 import api from './api';
 
 class Main extends Component {
@@ -22,8 +22,6 @@ class Main extends Component {
       result: [],
       predictions: [],
     };
-
-    this.updatePage = this.updatePage.bind(this);
   }
 
   /** Use API call to get users, and get result based on season. */
@@ -46,7 +44,7 @@ class Main extends Component {
   }
 
   /** Update the draft list and scoreboard for the selected season. */
-  async updatePage(event) {
+  updatePage = async (event) => {
     event.preventDefault();
 
     const selectedIndex = event.target.options.selectedIndex;
@@ -62,7 +60,71 @@ class Main extends Component {
     const predictions = await api.getPredictionsBySeason(selectedSeason.id);
 
     this.setState({ selectedSeason, result, predictions });
-  }
+  };
+
+  /**
+   * Renders the the Scoreboard for the users.
+   *
+   * @returns ListGroup of Users and their scores
+   */
+  renderScoreboard = () => {
+    const userScores = this.state.users
+      .map((user) => {
+        const userPredictions = getUserPredictions(
+          user,
+          this.state.predictions
+        );
+
+        return {
+          user,
+          score: getScore(this.state.result, userPredictions),
+        };
+      })
+      .sort((a, b) => b.score - a.score);
+
+    const listItems = userScores.map(({ user, score }) => (
+      <ListGroup.Item key={user.id}>
+        {user.name} <br /> {score}
+      </ListGroup.Item>
+    ));
+
+    return (
+      <ListGroup className='scoreboard'>
+        <h4>Scoreboard</h4>
+        {listItems}
+      </ListGroup>
+    );
+  };
+
+  /**
+   * Renders the the Drafts for each user sorted by score.
+   *
+   * @returns Array of UserEntry
+   */
+  renderUserDrafts = () => {
+    const drafts = this.state.users.map((user) => {
+      const draft = getUserPredictions(user, this.state.predictions);
+      return { user, draft };
+    });
+
+    return (
+      drafts
+        // Rank drafts by Score
+        .sort(
+          (a, b) =>
+            getScore(this.state.result, b.draft) -
+            getScore(this.state.result, a.draft)
+        )
+        .map(({ user, draft }) => (
+          <UserEntry
+            key={user.id}
+            user={user}
+            draft={draft}
+            queens={this.state.queens}
+          />
+        ))
+    );
+  };
 
   render() {
     return (
@@ -80,14 +142,7 @@ class Main extends Component {
           </select>
         </div>
         <div>
-          <ListGroup className='scoreboard'>
-            <h4>Scoreboard</h4>
-            {this.state.users.map((user) => (
-              <ListGroup.Item key={user.id}>
-                {user.name} - {getScore()}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+          {this.renderScoreboard()}
           <div className='line-ups'>
             <div>
               <h4>Results</h4>
@@ -95,16 +150,7 @@ class Main extends Component {
             </div>
             <div>
               <h4>All Users</h4>
-              {this.state.users.map((user) => (
-                <UserEntry
-                  key={user.id}
-                  user={user}
-                  draft={this.state.predictions.filter(
-                    (draft) => draft.user_id === user.id
-                  )}
-                  queens={this.state.queens}
-                />
-              ))}
+              {this.renderUserDrafts()}
             </div>
           </div>
         </div>
