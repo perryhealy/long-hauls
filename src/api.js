@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// TODO: make this an environment variable
 const API_URL = 'https://rpdr-party-games.herokuapp.com/api';
 
 /**

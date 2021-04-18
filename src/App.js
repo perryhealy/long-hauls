@@ -24,7 +24,7 @@ class App extends Component {
 
   onLogin = async (profileObj) => {
     let users = this.state.users;
-    let user = users.find((u) => u.email === profileObj.email);
+    const user = users.find((u) => u.email === profileObj.email);
     if (!user) {
       await api.createUser({
         name: profileObj.givenName,

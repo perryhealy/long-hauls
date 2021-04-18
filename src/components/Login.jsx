@@ -2,9 +2,10 @@ import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { refreshTokenSetup } from '../utils';
 
+// TODO: move this into an environment variable
 const clientId = '47074991686-f8t945ggrggrddm5mdvi9alkof42fj5r.apps.googleusercontent.com';
 
-function Login(props) {
+function Login({ onLogin }) {
   const onSuccess = async (res) => {
     console.log('[Login Success] currentUser:', res.profileObj);
 
@@ -12,7 +13,7 @@ function Login(props) {
     refreshTokenSetup(res);
 
     // Setting our user
-    await props.onLogin(res.profileObj);
+    await onLogin(res.profileObj);
   };
 
   const onFailure = (res) => {
