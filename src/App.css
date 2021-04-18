@@ -21,3 +21,11 @@ body {
 #logo {
   margin: 10px;
 }
+
+.navBar {
+  display: inline-block;
+}
+
+.navBar > * {
+  float: left;
+}

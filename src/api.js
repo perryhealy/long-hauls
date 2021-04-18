@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// TODO: make this an environment variable
 const API_URL = 'https://rpdr-party-games.herokuapp.com/api';
 
 /**
@@ -13,6 +14,17 @@ const API_URL = 'https://rpdr-party-games.herokuapp.com/api';
  * }
  */
 const getAllUsers = async () => (await axios.get(`${API_URL}/users`)).data;
+
+/**
+ * Add a user to the database.
+ *
+ * @param user a user needs the following: {
+ *  name: string,
+ *  email: string,
+ *  private: boolean
+ * }
+ */
+const createUser = async (user) => await axios.post(`${API_URL}/users`, user);
 
 /**
  * Get all queen info from database.
@@ -58,6 +70,7 @@ const getPredictionsBySeason = async (seasonId) =>
 
 export default {
   getAllUsers,
+  createUser,
   getAllQueens,
   getAllSeasons,
   getSeasonFromId,

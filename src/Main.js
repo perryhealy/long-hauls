@@ -15,7 +15,6 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
       queens: [],
       seasons: [],
       selectedSeason: {},
@@ -24,9 +23,8 @@ class Main extends Component {
     };
   }
 
-  /** Use API call to get users, and get result based on season. */
+  /** Use API calls to get data, and get result based on season. */
   async componentDidMount() {
-    const users = await api.getAllUsers();
     const queens = await api.getAllQueens();
     const seasons = await api.getAllSeasons();
     const selectedSeason = seasons[0];
@@ -34,7 +32,6 @@ class Main extends Component {
     const predictions = await api.getPredictionsBySeason(selectedSeason.id);
 
     this.setState({
-      users,
       queens,
       seasons,
       selectedSeason,
@@ -68,7 +65,7 @@ class Main extends Component {
    * @returns ListGroup of Users and their scores
    */
   renderScoreboard = () => {
-    const userScores = this.state.users
+    const userScores = this.props.users
       .map((user) => {
         const userPredictions = getUserPredictions(
           user,
@@ -102,7 +99,7 @@ class Main extends Component {
    * @returns Array of UserEntry
    */
   renderUserDrafts = () => {
-    const drafts = this.state.users.map((user) => {
+    const drafts = this.props.users.map((user) => {
       const draft = getUserPredictions(user, this.state.predictions);
       return { user, draft };
     });
