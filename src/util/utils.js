@@ -1,4 +1,5 @@
 const SeasonNaming = {
+  AU: 'Drag Race Down Under',
   US: "RuPaul's Drag Race",
   UK: "RuPaul's Drag Race UK",
   CA: "Canada's Drag Race",

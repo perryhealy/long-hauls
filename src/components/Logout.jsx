@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { GoogleLogout } from 'react-google-login';
 
 // TODO: move this into an environment variable
@@ -19,6 +20,10 @@ function Logout({ onLogout }) {
       />
     </div>
   );
+}
+
+Logout.propTypes = {
+  onLogout: PropTypes.func.isRequired,
 }
 
 export default Logout;
