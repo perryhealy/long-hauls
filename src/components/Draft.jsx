@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 // Components
 import { ListGroup } from 'react-bootstrap';
 
+// Utilities
+import { queenShape, contestantShape } from '../util/dataShapes';
+
 /** Stateless React component that displays a set of predictions. */
 const Draft = ({ draft, queens }) => {
   const sortedPredictionList = draft
@@ -20,21 +23,9 @@ const Draft = ({ draft, queens }) => {
   return <ListGroup horizontal>{listGroupItems}</ListGroup>;
 };
 
-const queenShape = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-const entryShape = {
-  congeniality: PropTypes.bool,
-  placement: PropTypes.number,
-  queen_id: PropTypes.number.isRequired,
-  season_id: PropTypes.number.isRequired,
-};
-
 Draft.propTypes = {
   queens: PropTypes.arrayOf(PropTypes.shape(queenShape)),
-  draft: PropTypes.arrayOf(PropTypes.shape(entryShape)),
+  draft: PropTypes.arrayOf(PropTypes.shape(contestantShape)),
 };
 
 export default Draft;

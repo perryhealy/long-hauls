@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Components
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -8,8 +9,9 @@ import Draft from './components/Draft';
 import './Main.css';
 
 // Utilities
-import { getSeasonName, getUserPredictions, getScore } from './utils';
 import api from './api';
+import { getSeasonName, getUserPredictions, getScore } from './util/utils';
+import { userShape } from './util/dataShapes';
 
 class Main extends Component {
   constructor(props) {
@@ -155,6 +157,11 @@ class Main extends Component {
     );
   }
 }
+
+Main.propTypes = {
+  user: PropTypes.shape(userShape),
+  users: PropTypes.arrayOf(PropTypes.shape(userShape)),
+};
 
 function UserEntry(props) {
   return (

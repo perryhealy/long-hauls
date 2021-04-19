@@ -62,7 +62,8 @@ const getSeasonFromId = async (seasonId) =>
  *  congeniality: boolean,
  *  placement: number,
  *  queen_id: number,
- *  season_id: number
+ *  season_id: number,
+ *  user_id: number
  * }
  */
 const getPredictionsBySeason = async (seasonId) =>
