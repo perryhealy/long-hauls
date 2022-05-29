@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import Main from './Main.js';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import api from './api';
+import Router from '../components/Router.jsx';
+import api from './shared/api';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import '../style/App.css';
 
 class App extends Component {
   constructor(props) {
@@ -44,15 +42,12 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <div className='navBar'>
-          <img id='logo' src={require('./s13_logo.jpg')} alt='logo' />
-          {this.state.user === null ? (
-            <Login onLogin={this.onLogin} />
-          ) : (
-            <Logout onLogout={this.onLogout} />
-          )}
-        </div>
-        <Main user={this.state.user} users={this.state.users} />
+        <Router
+          onLogin={this.onLogin}
+          onLogout={this.onLogout}
+          user={this.state.user}
+          users={this.state.users}
+        />
       </div>
     );
   }

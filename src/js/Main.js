@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 
 // Components
 import ListGroup from 'react-bootstrap/ListGroup';
-import Draft from './components/Draft';
+import Draft from '../components/Draft';
 
 // Styles
-import './Main.css';
+import '../style/Main.css';
 
 // Utilities
-import api from './api';
-import { getSeasonName, getUserPredictions, getScore } from './util/utils';
-import { userShape } from './util/dataShapes';
+import api from './shared/api';
+import { getSeasonName, getUserPredictions, getScore } from './shared/utils';
+import { userShape } from './shared/dataShapes';
 
 class Main extends Component {
   constructor(props) {
@@ -173,3 +173,4 @@ function UserEntry(props) {
 }
 
 export default Main;
+Main.displayName = 'Main';

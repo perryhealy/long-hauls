@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 
 // Utilities
-import { queenShape, contestantShape } from '../util/dataShapes';
+import { queenShape, contestantShape } from '../js/shared/dataShapes';
 
 /** Stateless React component that displays a set of predictions. */
 const Draft = ({ draft, queens }) => {

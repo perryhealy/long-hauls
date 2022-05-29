@@ -3,6 +3,9 @@ import axios from 'axios';
 // TODO: make this an environment variable
 const API_URL = 'https://rpdr-party-games.herokuapp.com/api';
 
+const cachedResults = {};
+const cachedPredictions = {};
+
 /**
  * Get all user info from database.
  *
@@ -51,8 +54,16 @@ const getAllSeasons = async () => (await axios.get(`${API_URL}/seasons`)).data;
  *  season_id: number
  * }
  */
-const getSeasonFromId = async (seasonId) =>
-  (await axios.get(`${API_URL}/seasons/${seasonId}`)).data.contestants;
+const getSeasonFromId = async (seasonId) => {
+  if (cachedResults[seasonId]) {
+    return cachedResults[seasonId];
+  } else {
+    cachedResults[seasonId] =
+      (await axios.get(`${API_URL}/seasons/${seasonId}`)).data.contestants ||
+      [];
+    return cachedResults[seasonId];
+  }
+};
 
 /**
  * Get all predictions for season with given id.
@@ -66,8 +77,16 @@ const getSeasonFromId = async (seasonId) =>
  *  user_id: number
  * }
  */
-const getPredictionsBySeason = async (seasonId) =>
-  (await axios.get(`${API_URL}/predictions/season/${seasonId}`)).data;
+const getPredictionsBySeason = async (seasonId) => {
+  if (cachedPredictions[seasonId]) {
+    return cachedPredictions[seasonId];
+  } else {
+    cachedPredictions[seasonId] =
+      (await axios.get(`${API_URL}/predictions/season/${seasonId}`)).data
+        .contestants || [];
+    return cachedPredictions[seasonId];
+  }
+};
 
 export default {
   getAllUsers,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GoogleLogin } from 'react-google-login';
-import { refreshTokenSetup } from '../util/utils';
+import { refreshTokenSetup } from '../js/shared/utils';
 
 // TODO: move this into an environment variable
 const clientId = '47074991686-f8t945ggrggrddm5mdvi9alkof42fj5r.apps.googleusercontent.com';
