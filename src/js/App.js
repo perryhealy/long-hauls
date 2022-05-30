@@ -10,14 +10,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      queens: [],
       user: null,
       users: [],
     };
   }
 
   async componentDidMount() {
+    const queens = await api.getAllQueens();
     const users = await api.getAllUsers();
-    this.setState({ users });
+    this.setState({ queens, users });
   }
 
   onLogin = async (profileObj) => {
@@ -45,6 +47,7 @@ class App extends Component {
         <Router
           onLogin={this.onLogin}
           onLogout={this.onLogout}
+          queens={this.state.queens}
           user={this.state.user}
           users={this.state.users}
         />

@@ -10,14 +10,14 @@ import '../style/Main.css';
 
 // Utilities
 import api from './shared/api';
-import { getSeasonName, getUserPredictions, getScore } from './shared/utils';
-import { userShape } from './shared/dataShapes';
+import { getUserPredictions, getScore } from './shared/utils';
+import { queenShape, userShape } from './shared/dataShapes';
+import SeasonSelector from '../components/SeasonSelector';
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      queens: [],
       seasons: [],
       selectedSeason: {},
       result: [],
@@ -27,14 +27,12 @@ class Main extends Component {
 
   /** Use API calls to get data, and get result based on season. */
   async componentDidMount() {
-    const queens = await api.getAllQueens();
     const seasons = await api.getAllSeasons();
     const selectedSeason = seasons[0];
     const result = await api.getSeasonFromId(selectedSeason.id);
     const predictions = await api.getPredictionsBySeason(selectedSeason.id);
 
     this.setState({
-      queens,
       seasons,
       selectedSeason,
       result,
@@ -43,23 +41,16 @@ class Main extends Component {
   }
 
   /** Update the draft list and scoreboard for the selected season. */
-  updatePage = async (event) => {
-    event.preventDefault();
+  async componentDidUpdate(_, prevState) {
+    if (prevState.selectedSeason !== this.state.selectedSeason) {
+      const result = await api.getSeasonFromId(this.state.selectedSeason.id);
+      const predictions = await api.getPredictionsBySeason(
+        this.state.selectedSeason.id
+      );
 
-    const selectedIndex = event.target.options.selectedIndex;
-    const seasonKey = event.target.options[selectedIndex]
-      .getAttribute('seasonkey')
-      .split(':');
-    const selectedSeason = this.state.seasons.find(
-      (season) =>
-        season.series === seasonKey[0] && season.num === parseInt(seasonKey[1])
-    );
-
-    const result = await api.getSeasonFromId(selectedSeason.id);
-    const predictions = await api.getPredictionsBySeason(selectedSeason.id);
-
-    this.setState({ selectedSeason, result, predictions });
-  };
+      this.setState({ result, predictions });
+    }
+  }
 
   /**
    * Renders the the Scoreboard for the users.
@@ -119,7 +110,7 @@ class Main extends Component {
             key={user.id}
             user={user}
             draft={draft}
-            queens={this.state.queens}
+            queens={this.props.queens}
           />
         ))
     );
@@ -128,24 +119,16 @@ class Main extends Component {
   render() {
     return (
       <div>
-        <div align='center'>
-          <select onChange={this.updatePage}>
-            {this.state.seasons.map((season) => (
-              <option
-                key={season.series + ':' + season.num}
-                seasonkey={season.series + ':' + season.num}
-              >
-                {getSeasonName(season.series)} Season {season.num}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SeasonSelector
+          seasons={this.state.seasons}
+          setSeason={(selectedSeason) => this.setState({ selectedSeason })}
+        />
         <div>
           {this.renderScoreboard()}
           <div className='line-ups'>
             <div>
               <h4>Results</h4>
-              <Draft draft={this.state.result} queens={this.state.queens} />
+              <Draft draft={this.state.result} queens={this.props.queens} />
             </div>
             <div>
               <h4>All Users</h4>
@@ -159,6 +142,7 @@ class Main extends Component {
 }
 
 Main.propTypes = {
+  queens: PropTypes.arrayOf(PropTypes.shape(queenShape)),
   user: PropTypes.shape(userShape),
   users: PropTypes.arrayOf(PropTypes.shape(userShape)),
 };
