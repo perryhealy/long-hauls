@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import { GoogleLogin } from 'react-google-login';
 import { refreshTokenSetup } from '../js/shared/utils';
 
-// TODO: move this into an environment variable
-const clientId = '47074991686-f8t945ggrggrddm5mdvi9alkof42fj5r.apps.googleusercontent.com';
-
 function Login({ onLogin }) {
   const onSuccess = async (res) => {
     console.log('[Login Success] currentUser:', res.profileObj);
@@ -24,7 +21,7 @@ function Login({ onLogin }) {
   return (
     <div>
       <GoogleLogin
-        clientId={clientId}
+        clientId={process.env.REACT_APP_CLIENT_ID}
         buttonText="Login with Google"
         onSuccess={onSuccess}
         onFailure={onFailure}

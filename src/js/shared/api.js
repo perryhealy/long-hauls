@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-// TODO: make this an environment variable
-const API_URL = 'https://rpdr-party-games.herokuapp.com/api';
-
 const cachedResults = {};
 const cachedPredictions = {};
 
@@ -16,7 +13,8 @@ const cachedPredictions = {};
  *  private: boolean
  * }
  */
-const getAllUsers = async () => (await axios.get(`${API_URL}/users`)).data;
+const getAllUsers = async () =>
+  (await axios.get(`${process.env.REACT_APP_API_URL}/users`)).data;
 
 /**
  * Add a user to the database.
@@ -27,21 +25,24 @@ const getAllUsers = async () => (await axios.get(`${API_URL}/users`)).data;
  *  private: boolean
  * }
  */
-const createUser = async (user) => await axios.post(`${API_URL}/users`, user);
+const createUser = async (user) =>
+  await axios.post(`${process.env.REACT_APP_API_URL}/users`, user);
 
 /**
  * Get all queen info from database.
  *
  * @returns Array of queens: { id: number, name: string }
  */
-const getAllQueens = async () => (await axios.get(`${API_URL}/queens`)).data;
+const getAllQueens = async () =>
+  (await axios.get(`${process.env.REACT_APP_API_URL}/queens`)).data;
 
 /**
  * Get all season info from database.
  *
  * @returns Array of seasons: { id: number, series: string }
  */
-const getAllSeasons = async () => (await axios.get(`${API_URL}/seasons`)).data;
+const getAllSeasons = async () =>
+  (await axios.get(`${process.env.REACT_APP_API_URL}/seasons`)).data;
 
 /**
  * Get info for season with given ID.
@@ -59,8 +60,8 @@ const getSeasonFromId = async (seasonId) => {
     return cachedResults[seasonId];
   } else {
     cachedResults[seasonId] =
-      (await axios.get(`${API_URL}/seasons/${seasonId}`)).data.contestants ||
-      [];
+      (await axios.get(`${process.env.REACT_APP_API_URL}/seasons/${seasonId}`))
+        .data.contestants || [];
     return cachedResults[seasonId];
   }
 };
@@ -82,8 +83,11 @@ const getPredictionsBySeason = async (seasonId) => {
     return cachedPredictions[seasonId];
   } else {
     cachedPredictions[seasonId] =
-      (await axios.get(`${API_URL}/predictions/season/${seasonId}`)).data
-        .contestants || [];
+      (
+        await axios.get(
+          `${process.env.REACT_APP_API_URL}/predictions/season/${seasonId}`
+        )
+      ).data.contestants || [];
     return cachedPredictions[seasonId];
   }
 };
